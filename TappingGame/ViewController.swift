@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var timer = NSTimer()
+    
     var timeInt = 0
     var tapInt = 0
     
@@ -39,10 +41,56 @@ class ViewController: UIViewController {
     
     
     @IBAction func StartGame(sender: AnyObject) {
+        
+        if timeInt == 10 {
+            
+            tapInt = 0
+            
+            ScoreLabel.text = String(tapInt)
+            TimeLabel.text = String(timeInt)
+            
+            TapButton.enabled = true
+            
+            timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("startCounter"), userInfo: nil, repeats: true)
+            
+        }
+        
+    }
+    
+    func startCounter() {
+        
+        timeInt -= 1
+        
+        TimeLabel.text = String(timeInt)
+        
+        if timeInt == 0 {
+            
+            timer.invalidate()
+            
+        }
+        
     }
 
 
+
     @IBAction func TapMe(sender: AnyObject) {
+        
+        if timeInt > 0 {
+            
+            tapInt += 1
+            ScoreLabel.text = String(tapInt)
+            
+        }
+        
+        if timeInt == 0 {
+            
+            TapButton.enabled = false
+            
+            timeInt = 10
+            tapInt = 0
+            
+        }
+        
     }
     
 }
